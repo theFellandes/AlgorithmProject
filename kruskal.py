@@ -4,7 +4,7 @@ import graph_util
 
 
 def kruskal(source: int, destination: int, number_of_cities: int):
-    graph = graph_util.node_generator(number_of_cities=number_of_cities)
+    graph = graph_util.graph_generator(number_of_cities=number_of_cities)
 
 
 def repetition_for_report():
