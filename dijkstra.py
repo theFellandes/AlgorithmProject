@@ -5,11 +5,22 @@
 import graph_util
 import heapq
 
+repetition_counter = 0
+
+
+def main():
+    # repetition_for_report()
+    N = int(input("Please enter the N value: "))
+    S = int(input("Please enter the Source vertex: "))
+    D = int(input("Please enter the Destination vertex: "))
+    print(dijkstra(S, D, N))
+
 
 def dijkstra(source: int, destination: int, number_of_cities: int):
     # This is not a part of the dijkstra algorithm, it creates the specified graph
     # then dijkstra's algorithm is applied to this newly created graph.
     vertices, weights, adj = graph_util.graph_generator_dijkstra(number_of_cities)
+    global repetition_counter
 
     # DEMO
     # vertices = [1, 2, 3, 4, 5]
@@ -29,20 +40,24 @@ def dijkstra(source: int, destination: int, number_of_cities: int):
         S.append(u)  # Visited vertices are put into the S array. O(V) times.
         for v in adj[u - 1]:  # Repeated O(E) times.
             relax(u, v, weights, d, pi)  # Relaxes the weight of vertex v. O(E) times.
+            repetition_counter += 1
     path = pi[destination - 1]  # Path of source to destination is saved to the path array. O(1) times.
     path.append(destination)  # The destination itself is added to the path. O(1) times.
     total_weight = 0
     for i in range(len(path) - 1):  # Repeats PathLength times so O(E) times.
         total_weight += weights[path[i] - 1][path[i + 1] - 1]  # Weights along the path are summed up. O(E) times.
+        repetition_counter += 1
     return path, total_weight
 
 
 def initialize_single_source(vertices, source):
     d = []
     pi = []
+    global repetition_counter
     for v in vertices:  # Repeats O(V) times.
         d.append(float('inf'))  # Initializes d array, the weights of vertices, filled with inf weights. O(V) times.
         pi.append([])  # Creates empty pi arrays to hold the path from source to a vertex, for every vertex. O(V) times.
+        repetition_counter += 1
     d[source - 1] = 0  # Initializes the value of source vertex to 0. O(1) times.
     return d, pi
 
@@ -57,13 +72,18 @@ def relax(u, v, weights, d, pi):
 
 def repetition_for_report():
     repetition_values = [10, 50, 100, 200, 500, 1000, 2000]
+    repetition_values = range(10, 2000, 40)
+    n = []
+    rep = []
+    global repetition_counter
     for repetition in repetition_values:
         print("Number of Cities: " + str(repetition))
         dijkstra(source=1, destination=repetition, number_of_cities=repetition)
+        print(repetition_counter)
+        n.append(repetition)
+        rep.append(repetition_counter)
 
-
-def main():
-    print(dijkstra(1, 6, 10))
+    graph_util.plot_graph(n, rep, "N", "Repetitions", "Dijkstra's Algorithm")
 
 
 if __name__ == '__main__':

@@ -3,10 +3,20 @@
 import graph_util
 
 
+repetition_counter = 0
+
+
+def main():
+    # repetition_for_report()
+    N = int(input("Please enter the N value: "))
+    print(kruskal(N))
+
+
 def kruskal(number_of_cities: int):
     # This is not a part of the kruskal's algorithm, it creates the specified graph
     # then kruskal's algorithm is applied to this newly created graph.
     vertices, weights = graph_util.graph_generator_kruskal(number_of_cities=number_of_cities)
+    global repetition_counter
 
     # DEMO
     # vertices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -20,6 +30,7 @@ def kruskal(number_of_cities: int):
     sets = []  # Initializing the sets array that will hold the sets created for kruskal's algorithm. O(1) times.
     for v in vertices:  # Repeats O(V) times.
         sets.append(make_set(v))  # Creates a set for every vertex, holding only that vertex. O(V) times.
+        repetition_counter += 1
     # Elements of weights array are in the shape of [Weight, u, v],
     # so this operation sorts this array by the weights and edges are thus sorted with them.
     weights.sort()  # O(1) times.
@@ -38,9 +49,11 @@ def make_set(u):
 
 
 def find_set(u, sets):
+    global repetition_counter
     for set_index in range(len(sets)):  # Repeats O(V) times. Although not a tight upper bound.
         if u in sets[set_index]:  # If the vertex is in this specific set, O(V) times.
             return set_index  # return its index inside the sets array. O(V) times.
+        repetition_counter += 1
     return None
 
 
@@ -55,16 +68,16 @@ def union(u, v, sets):
 
 def repetition_for_report():
     repetition_values = [10, 50, 100, 200, 500, 1000, 2000]
+    repetition_values = range(10, 2000, 40)
+    n = []
+    rep = []
     for repetition in repetition_values:
         print("Number of Cities: " + str(repetition))
         kruskal(number_of_cities=repetition)
+        n.append(repetition)
+        rep.append(repetition_counter)
 
-
-def main():
-    print(kruskal(10))
-    # arr = [[4, 5, 6], [1, 2, 3]]
-    # union(1, 4, arr)
-    # print(arr)
+    graph_util.plot_graph(n, rep, "N", "Repetitions", "Kruskal's Algorithm")
 
 
 if __name__ == '__main__':

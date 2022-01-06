@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+
+
 def graph_generator_dijkstra(number_of_cities: int):
     vertices = [*range(1, number_of_cities + 1)]
     weights = []
@@ -26,3 +29,13 @@ def graph_generator_kruskal(number_of_cities: int):
                 weights.append([i + j, i, j])
 
     return vertices, weights
+
+
+def plot_graph(x, y, x_label, y_label, title):
+    plt.plot(x, y)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    plt.tight_layout()
+    plt.savefig(title)
+    plt.show()
