@@ -9,7 +9,7 @@ import heapq
 def dijkstra(source: int, destination: int, number_of_cities: int):
     # This is not a part of the dijkstra algorithm, it creates the specified graph
     # then dijkstra's algorithm is applied to this newly created graph.
-    vertices, weights, adj = graph_util.graph_generator(number_of_cities)
+    vertices, weights, adj = graph_util.graph_generator_dijkstra(number_of_cities)
 
     # DEMO
     # vertices = [1, 2, 3, 4, 5]
